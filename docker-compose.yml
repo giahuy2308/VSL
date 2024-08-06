@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: db
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # environment:
+    #   - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+  backend:
+    container_name: vsl_backend
+    build:
+      context: ./vsl_backend
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    command: gunicorn --bind 0.0.0.0:8000 vsl.wsgi:application
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  frontend:
+    container_name: vsl_frontend
+    build:
+      context: ./vsl_frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - .:/app
+      # - /app/node_modules
+
+volumes:
+  postgres_data:

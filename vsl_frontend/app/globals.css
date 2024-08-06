@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    box-sizing: border-box;
+}
+
+@layer base {
+    :root {
+        --footer: #9090905c;
+        --background: #ffffff;
+        --foreground: #000000;
+        --card: #000000;
+        --card-foreground: #ffffff;
+        --popover: #ffffff;
+        --popover-foreground: #ffffff;
+        --primary: #000000;
+        --primary-foreground: #ffffff;
+        --secondary: #ffffff;
+        --secondary-foreground: #ffffff;
+        --muted: #3939394b;
+        --muted-foreground: #121212e3;
+        --accent: #000000f2;
+        --accent-foreground: #ffffff;
+        --destructive: #ffffff;
+        --destructive-foreground: #ffffff;
+        /* Màu components phụ */
+        --roomCard: #f3f3f3;
+        --button: #191919;
+        --hover: #373737;
+        --border11: #ffffff;
+        --underline: #ffffff;
+        --input: #ffffff;
+        --ring1: #494949;
+        /* Biểu đồ */
+        --chart-1: #ffffff;
+        --chart-2: #ffffff;
+        --chart-3: #ffffff;
+        --chart-4: #ffffff;
+        --chart-5: #ffffff;
+    }
+
+    .Light {
+        /* Màu components chính */
+        --footer: #ffffff;
+        --background: #ffffff;
+        --foreground: #ffffff;
+        --card: #ffffff;
+        --card-foreground: #ffffff;
+        --popover: #ffffff;
+        --popover-foreground: #ffffff;
+        --primary: #ffffff;
+        --primary-foreground: #ffffff;
+        --secondary: #ffffff;
+        --secondary-foreground: #ffffff;
+        --muted: #ffffff;
+        --muted-foreground: #ffffff;
+        --accent: #ffffff;
+        --accent-foreground: #ffffff;
+        --destructive: #ffffff;
+        --destructive-foreground: #ffffff;
+        /* Màu components phụ */
+        --border1: #ffffff;
+        --underline: #ffffff;
+        --input: #ffffff;
+        --ring1: #ffffff;
+        /* Biểu đồ */
+        --chart-1: #ffffff;
+        --chart-2: #ffffff;
+        --chart-3: #ffffff;
+        --chart-4: #ffffff;
+        --chart-5: #ffffff;
+    }
+
+    .Dark {
+        /* Màu components chính */
+        --footer: #9090905c;
+        --background: #ffffff;
+        --foreground: #000000;
+        --card: #000000;
+        --card-foreground: #ffffff;
+        --popover: #ffffff;
+        --popover-foreground: #ffffff;
+        --primary: #000000;
+        --primary-foreground: #ffffff;
+        --secondary: #ffffff;
+        --secondary-foreground: #ffffff;
+        --muted: #3939394b;
+        --muted-foreground: #121212e3;
+        --accent: #000000f2;
+        --accent-foreground: #ffffff;
+        --destructive: #ffffff;
+        --destructive-foreground: #ffffff;
+        /* Màu components phụ */
+        --border1: #ffffff;
+        --underline: #ffffff;
+        --input: #ffffff;
+        --ring1: #ffffff;
+        /* Biểu đồ */
+        --chart-1: #ffffff;
+        --chart-2: #ffffff;
+        --chart-3: #ffffff;
+        --chart-4: #ffffff;
+        --chart-5: #ffffff;
+    }
+
+    .Spring {
+        /* Màu components chính */
+        --footer: #ffffff;
+        --background: #ffffff;
+        --foreground: #ffffff;
+        --card: #ffffff;
+        --card-foreground: #ffffff;
+        --popover: #ffffff;
+        --popover-foreground: #ffffff;
+        --primary: #ffffff;
+        --primary-foreground: #ffffff;
+        --secondary: #ffffff;
+        --secondary-foreground: #ffffff;
+        --muted: #ffffff;
+        --muted-foreground: #ffffff;
+        --accent: #ffffff;
+        --accent-foreground: #ffffff;
+        --destructive: #ffffff;
+        --destructive-foreground: #ffffff;
+        /* Màu components phụ */
+        --border1: #ffffff;
+        --underline: #ffffff;
+        --input: #ffffff;
+        --ring1: #ffffff;
+        /* Biểu đồ */
+        --chart-1: #ffffff;
+        --chart-2: #ffffff;
+        --chart-3: #ffffff;
+        --chart-4: #ffffff;
+        --chart-5: #ffffff;
+    }
+
+    .Summer {
+        /* Màu components chính */
+        --footer: #ffffff;
+        --background: #ffffff;
+        --foreground: #ffffff;
+        --card: #ffffff;
+        --card-foreground: #ffffff;
+        --popover: #ffffff;
+        --popover-foreground: #ffffff;
+        --primary: #ffffff;
+        --primary-foreground: #ffffff;
+        --secondary: #ffffff;
+        --secondary-foreground: #ffffff;
+        --muted: #ffffff;
+        --muted-foreground: #ffffff;
+        --accent: #ffffff;
+        --accent-foreground: #ffffff;
+        --destructive: #ffffff;
+        --destructive-foreground: #ffffff;
+        /* Màu components phụ */
+        --border1: #ffffff;
+        --underline: #ffffff;
+        --input: #ffffff;
+        --ring1: #ffffff;
+        /* Biểu đồ */
+        --chart-1: #ffffff;
+        --chart-2: #ffffff;
+        --chart-3: #ffffff;
+        --chart-4: #ffffff;
+        --chart-5: #ffffff;
+    }
+
+    .Fall {
+        /* Màu components chính */
+        --footer: #ffffff;
+        --background: #ffffff;
+        --foreground: #ffffff;
+        --card: #ffffff;
+        --card-foreground: #ffffff;
+        --popover: #ffffff;
+        --popover-foreground: #ffffff;
+        --primary: #ffffff;
+        --primary-foreground: #ffffff;
+        --secondary: #ffffff;
+        --secondary-foreground: #ffffff;
+        --muted: #ffffff;
+        --muted-foreground: #ffffff;
+        --accent: #ffffff;
+        --accent-foreground: #ffffff;
+        --destructive: #ffffff;
+        --destructive-foreground: #ffffff;
+        /* Màu components phụ */
+        --border1: #ffffff;
+        --underline: #ffffff;
+        --input: #ffffff;
+        --ring1: #ffffff;
+        /* Biểu đồ */
+        --chart-1: #ffffff;
+        --chart-2: #ffffff;
+        --chart-3: #ffffff;
+        --chart-4: #ffffff;
+        --chart-5: #ffffff;
+    }
+
+    .Winter {
+        /* Màu components chính */
+        --footer: #ffffff;
+        --background: #ffffff;
+        --foreground: #ffffff;
+        --card: #ffffff;
+        --card-foreground: #ffffff;
+        --popover: #ffffff;
+        --popover-foreground: #ffffff;
+        --primary: #ffffff;
+        --primary-foreground: #ffffff;
+        --secondary: #ffffff;
+        --secondary-foreground: #ffffff;
+        --muted: #ffffff;
+        --muted-foreground: #ffffff;
+        --accent: #ffffff;
+        --accent-foreground: #ffffff;
+        --destructive: #ffffff;
+        --destructive-foreground: #ffffff;
+        /* Màu components phụ */
+        --border1: #ffffff;
+        --underline: #ffffff;
+        --input: #ffffff;
+        --ring1: #ffffff;
+        /* Biểu đồ */
+        --chart-1: #ffffff;
+        --chart-2: #ffffff;
+        --chart-3: #ffffff;
+        --chart-4: #ffffff;
+        --chart-5: #ffffff;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border1;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
