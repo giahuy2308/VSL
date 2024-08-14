@@ -1,7 +1,22 @@
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
-from .models import Question, Choice, Content, Animation, Image
+from .models import Question, Choice, Content, Animation, Image, Lesson
+
+from django.db.models import Q
+
+def filter_instances(model, field_name=None, value=None):
+    """
+    Lọc danh sách các instance dựa trên giá trị của một trường cụ thể.
+    :param model: Danh sách các instance của lớp Book
+    :param field_name: Tên trường cần lọc (dưới dạng chuỗi)
+    :param value: Giá trị cần so sánh
+    :return: Danh sách các instance thỏa mãn điều kiện lọc
+    """
+    if not field_name == None:
+        filtered_instances = [instance for instance in model if getattr(instance, field_name) == value]
+        return filtered_instances
+    return model.objects.all()
 
 @receiver(post_save, sender=Question)
 def create_or_update_choice(sender, instance, created, **kwargs):
@@ -15,34 +30,50 @@ def create_or_update_choice(sender, instance, created, **kwargs):
         except Choice.DoesNotExist:
             Choice.objects.create(question=instance, title=instance.answer)
 
-def update_no(instance, is_update):
-    sec = instance.section
-    scl = list(Content.objects.filter(section=sec)) + list(Image.objects.filter(section=sec)) + list(Animation.objects.filter(section=sec))
-    if is_update:
-        scl.remove(instance)
-        scl = scl[0:instance.no-1] + [instance] + scl[instance.no-1:]
-    for i in range(len(scl)):
-        # Sử dụng update() thay vì save() để tránh kích hoạt signal
-        scl[i].__class__.objects.filter(pk=scl[i].pk).update(no=i+1)
+@receiver(post_save, sender=Lesson)
+def create_or_update_lesson(sender, instance, created, **kwargs):
+    if created:
+        if instance.no == 0:
+            new_no = len(Lesson.objects.all()) + 1
+            instance.no = new_no
+            instance.save(update_fields=['no'])
+        
+    all_lessons = list(Lesson.objects.all())
+    all_lessons.sort(key=lambda x: x.no)
+    all_lessons.remove(instance)
+    all_lessons.insert(instance.no - 1, instance)
 
-    # Cập nhật lại số lượng nội dung cho section
-    sec.save(update_fields=["content_quantity"])
+    for i, lesson in enumerate(all_lessons, 1):
+        if lesson.no != i :
+            lesson.no = i 
+            lesson.save(update_fields=['no'])
+
+def update_no(instance, model, *sort_model):
+    li = filter_instances(model, )
+
+
+    for i, obj in enumerate(li, 1):
+        if obj.no != i :
+            obj.no = i 
+            obj.save(update_fields=['no'])
+    
 
 def delete_section_content(instance):
     instance.section.content_quantity -= 1
     update_no(instance, False)
+    instance.section.save(update_fields=["content_quantity"])
 
-def create_or_update_section_content(instance,created):
+def create_or_update_section_content(instance, created):
     if created:
         instance.section.content_quantity += 1
     update_no(instance, True)
-
+    instance.section.save(update_fields=["content_quantity"])
 
 @receiver(post_save, sender=Content)
 @receiver(post_save, sender=Image)
 @receiver(post_save, sender=Animation)
 def handle_content_image_animation(sender, instance, created, **kwargs):
-    create_or_update_section_content(instance,created)
+    create_or_update_section_content(instance, created)
 
 
 @receiver(post_delete, sender=Content)
@@ -50,3 +81,5 @@ def handle_content_image_animation(sender, instance, created, **kwargs):
 @receiver(post_delete, sender=Animation)
 def handle_content_image_animation(sender, instance, **kwargs):
     delete_section_content(instance)
+
+

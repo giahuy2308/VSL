@@ -4,15 +4,15 @@ from django.db.models import Q
 
 from vsl.permissions import IsSuperUserOrReadOnly, IsAuthor
 from django.conf import settings
-from .serializers import NotificationSerializer
+from .serializers import NotificationSerializer, CustomUserSerializer
 from .models import Notification
 
-from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView, TokenVerifyView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView # type: ignore
 from rest_framework.views import APIView, Response, status
+from rest_framework.decorators import action
 from rest_framework import viewsets, permissions
 
 from djoser.social.views import ProviderAuthView
-
 
 class CustomProviderAuthView(ProviderAuthView):
     def post(self,request, *args, **kwargs):
@@ -148,7 +148,6 @@ class CustomTokenVerifyView(TokenVerifyView):
             request.data['token'] = access_token
             
         return super().post(request, *args, **kwargs)
-
 
 
 class LogOutView(APIView):

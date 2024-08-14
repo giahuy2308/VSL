@@ -12,7 +12,8 @@ class CourseSerializer(serializers.ModelSerializer):
 
         if self.context.get("include_lessons"):
             lessons = LessonSerializer(instance.lessons, many=True).data
-            representation["lessons"] = lessons
+            li = sorted(lessons, key=lambda obj:obj["no"])
+            representation["lessons"] = li
 
         return representation
 
@@ -26,7 +27,7 @@ class LessonSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         
         if self.context.get('include_sections'):
-            sections = SectionSerializer(instance.sections, context={"include_contents":True}, many=True).data
+            sections = SectionSerializer(instance.sections, many=True).data
             representation['sections'] = sections
         
         return representation

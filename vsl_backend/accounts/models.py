@@ -1,12 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
-
+import os
 # Create your models here.
 
 class CustomUser(AbstractUser):
+    avatar = models.ImageField(upload_to="static/image", blank=True, null=True)
     email = models.EmailField(unique=True)  
-    pass
+
+    def delete(self):
+        remove = super().delete()
+        os.remove(self.avatar.path)        
+        return remove
 
 # It's required to import Page after creating CustomUser
 from django.contrib.contenttypes.models import ContentType 

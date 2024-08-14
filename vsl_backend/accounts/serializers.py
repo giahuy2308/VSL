@@ -1,26 +1,25 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import CustomUser, Notification
+from djoser.serializers import UserSerializer 
+from djoser.conf import settings
 
-
-class UserSerializer(serializers.ModelSerializer):
+class CustomUserSerializer(UserSerializer):
     class Meta:
         model = get_user_model()
         fields = (
-            'username',
-            'email',
-            'password',
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "avatar",
         )
-        extra_kwargs = {'password': {'write_only': True}}
-
-    def create(self, validated_data):
-        user = CustomUser(
-            username=validated_data['username'],
-            email=validated_data['email']
-        )
-        user.set_password(validated_data['password'])
-        user.save()
-        return user    
+        read_only_fields = (settings.LOGIN_FIELD,)
+        kwargs = {
+            "write_only": {"password":True}
+        }
+        
     
 
 class NotificationSerializer(serializers.ModelSerializer):

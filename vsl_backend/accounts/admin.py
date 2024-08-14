@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from .models import CustomUser, Notification
+from .models import Notification
 from .forms import CustomUserCreationForm,CustomUserChangeForm
 from django.contrib.auth.admin import UserAdmin
 
@@ -10,10 +10,11 @@ CustomUser = get_user_model()
 class CustomUserAmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
-    model = CustomUser
+    model = CustomUser 
     list_display = (
         'username',
         'email',
+        "avatar",
         'is_active',
         'is_superuser'
     )

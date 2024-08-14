@@ -14,25 +14,16 @@ class Course(models.Model):
 class Lesson(models.Model):
     title = models.TextField(max_length=500,default="")
     course = models.ForeignKey(Course, related_name="lessons",on_delete=models.CASCADE)
-    status = models.CharField(
-        max_length=100,
-        choices=(
-            ("Completed","completed"),
-            ("In Progress","in progress"),
-            ("Uncompleted","uncompleted"),
-        ),
-        default='uncompleted'
-    )
-
+    no = models.PositiveIntegerField(default=0)
+    
     def __str__(self):
-        return f"{self.id}"
+        return f"{self.no} | {self.id}"
 
 
 class Section(models.Model):
     title = models.TextField(max_length=255, default="")
     lesson = models.ForeignKey(Lesson,related_name="sections",on_delete=models.CASCADE)
     content_quantity = models.PositiveIntegerField(default=0)
-    content_list = []
 
     def __str__(self):
         return f"{self.id}"
@@ -51,6 +42,7 @@ class Image(models.Model):
     section = models.ForeignKey(Section,related_name="images",on_delete=models.CASCADE)
     alt = models.CharField(max_length=100,default="")
     image = models.ImageField(upload_to="static/image/")
+    title = models.CharField(max_length=100,blank=True, null=True)
     no = models.PositiveIntegerField(default=1)
 
     def delete(self):
@@ -73,7 +65,6 @@ class Animation(models.Model):
     
 
 class Exercise(models.Model):
-    title = models.TextField(max_length=500, default="")
     content = models.TextField()
     answer = models.TextField()
     lesson = models.ForeignKey(Lesson,related_name="exercises",on_delete=models.CASCADE)

@@ -10,15 +10,34 @@ from django.contrib.contenttypes.models import ContentType
 class Community(models.Model):
     name = models.CharField(max_length=100,default="")
     introduction = models.TextField()
-    administrator = models.ForeignKey(get_user_model(),related_name="communities_ad", on_delete=models.CASCADE)
+    group_avatar = models.ImageField(upload_to="static/image/", blank=True, null=True)
     p_password = models.CharField(max_length=200,default="",blank=True,null=True)
-    participant = models.ManyToManyField(get_user_model(),related_name="communities_pa")
     is_public = models.BooleanField(default=True)
+    is_hidden = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    def delete(self):
+        remove = super().delete()
+        os.remove(self.group_avatar.path)        
+        return remove
 
     def __str__(self):
         return f"{self.id}"
-   
+
+class Participant(models.Model):
+    ROLE_CHOICES = [
+        ('admin', 'Administrator'),
+        ('member', 'Member'),
+        ('guest', 'Guest'),
+    ]
+
+    user = models.ForeignKey(get_user_model(), related_name="members", on_delete=models.CASCADE)
+    community = models.ForeignKey(Community, related_name="participants", on_delete=models.CASCADE)
+    role = models.CharField(max_length=100, choices=ROLE_CHOICES, default="guest")
+
+    def __str__(self) -> str:
+        return f'{self.user.username} | {self.community.name} | {self.role} | {self.id}'
+
 
 class Reaction(models.Model):
     TYPE_CHOICES = (
@@ -61,4 +80,4 @@ class Comment(models.Model):
     reactions = GenericRelation(Reaction, related_query_name='comment')
 
     def __str__(self):
-        return f"{f"{self.id}"}"
+        return f"{self.id}"
