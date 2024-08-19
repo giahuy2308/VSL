@@ -29,11 +29,3 @@ class IsAuthorOrReadOnly(IsAuthenticated):
                 return request.user == obj.administrator
             except:
                 return request.user == obj.author
-
-class ParticipantPer(IsAuthenticated):
-    
-    def has_object_permission(self, request, view, obj):
-        if obj.is_public:
-            if request.method in SAFE_METHODS:
-                return True
-        return request.user in obj.participant.all()

@@ -130,7 +130,7 @@ class ExaminationView(viewsets.ModelViewSet):
         score *= assignment.examination.total_score/len(request.data)
         assignment.score = round(score)
         assignment.save()
-        return Response({"status":"Nộp bài thành công"},status=status.HTTP_200_OK)
+        return Response({"status":"Nộp bài thành công"}, status=status.HTTP_200_OK)
 
 
 class QuestionView(viewsets.ModelViewSet):

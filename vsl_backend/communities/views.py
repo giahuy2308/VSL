@@ -5,7 +5,7 @@ from django.http import Http404
 from rest_framework.views import Response, status
 from rest_framework import viewsets, permissions
 
-from vsl.permissions import IsAuthorOrReadOnly, ParticipantPer
+from vsl.permissions import IsAuthorOrReadOnly
 from accounts.models import Notification
 from .serializers import *
 from .models import * 
@@ -13,7 +13,7 @@ from .models import *
 # Create your views here.
 
 class CommunityView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthorOrReadOnly,ParticipantPer]
+    permission_classes = [IsAuthorOrReadOnly]
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
 
@@ -31,7 +31,7 @@ class CommunityView(viewsets.ModelViewSet):
         serializer.save(administrator=self.request.user, participant=participants)
 
 class PageView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthorOrReadOnly,ParticipantPer]
+    permission_classes = [IsAuthorOrReadOnly]
     queryset = Page.objects.all()
     serializer_class = PageSerializer
 
@@ -48,7 +48,7 @@ class PageView(viewsets.ModelViewSet):
 
 
 class CommentView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthorOrReadOnly,ParticipantPer]
+    permission_classes = [IsAuthorOrReadOnly]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
@@ -57,7 +57,7 @@ class CommentView(viewsets.ModelViewSet):
 
 
 class ReactionView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthorOrReadOnly,ParticipantPer]
+    permission_classes = [IsAuthorOrReadOnly]
     queryset = Reaction.objects.all()
     serializer_class = ReactionSerializer
 

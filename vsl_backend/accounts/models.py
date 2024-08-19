@@ -10,7 +10,8 @@ class CustomUser(AbstractUser):
 
     def delete(self):
         remove = super().delete()
-        os.remove(self.avatar.path)        
+        if self.avatar is not None:
+            os.remove(self.avatar.path)        
         return remove
 
 # It's required to import Page after creating CustomUser

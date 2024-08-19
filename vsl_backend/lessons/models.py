@@ -6,6 +6,7 @@ import os
 
 class Course(models.Model):
     title = models.CharField(max_length=255, default="")
+    description = models.TextField(blank=True,null=True)
 
     def __str__(self):
         return f"{self.id}"
@@ -15,6 +16,9 @@ class Lesson(models.Model):
     title = models.TextField(max_length=500,default="")
     course = models.ForeignKey(Course, related_name="lessons",on_delete=models.CASCADE)
     no = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["no"]
     
     def __str__(self):
         return f"{self.no} | {self.id}"
@@ -23,10 +27,14 @@ class Lesson(models.Model):
 class Section(models.Model):
     title = models.TextField(max_length=255, default="")
     lesson = models.ForeignKey(Lesson,related_name="sections",on_delete=models.CASCADE)
+    no = models.PositiveIntegerField(default=0)
     content_quantity = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        ordering = ["no"]
+    
     def __str__(self):
-        return f"{self.id}"
+        return f"{self.no} | {self.id}"
 
 
 class Content(models.Model):
@@ -35,9 +43,8 @@ class Content(models.Model):
     no = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f'{self.no} | {f"{self.id}"}'
+        return f'{self.no} | {self.id}'
     
-
 class Image(models.Model):
     section = models.ForeignKey(Section,related_name="images",on_delete=models.CASCADE)
     alt = models.CharField(max_length=100,default="")
@@ -51,7 +58,7 @@ class Image(models.Model):
         return remove
 
     def __str__(self):
-        return f'{self.no} | "{f"{self.id}"}"'
+        return f'{self.no} | {self.id}'
 
 
 class Animation(models.Model):
@@ -61,7 +68,7 @@ class Animation(models.Model):
     no = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f'{self.no} | "{f"{self.id}"}"'
+        return f'{self.no} | {self.id}'
     
 
 class Exercise(models.Model):
@@ -86,6 +93,9 @@ class Question(models.Model):
     examination = models.ForeignKey(Examination,related_name='questions',on_delete=models.CASCADE)
     title = models.TextField(max_length=500,default='')
     answer = models.CharField(max_length=100,default='')
+
+    class Meta:
+        unique_together = (("examination","title", "answer"),)
         
     def __str__(self):
         return f"{self.id}"
@@ -94,6 +104,9 @@ class Question(models.Model):
 class Choice(models.Model):
     question = models.ForeignKey(Question,related_name='choices',on_delete=models.CASCADE) 
     title = models.CharField(max_length=500,default='')
+
+    class Meta:
+        unique_together = (("question","title"),)
 
     def __str__(self):
         return f"{self.id}"
@@ -105,6 +118,9 @@ class Assignment(models.Model):
     score = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["created_at"]
+        
     def __str__(self):
         return f"{self.id}"
 

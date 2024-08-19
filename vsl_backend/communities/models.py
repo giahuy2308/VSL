@@ -1,6 +1,7 @@
 import os
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
@@ -10,15 +11,29 @@ from django.contrib.contenttypes.models import ContentType
 class Community(models.Model):
     name = models.CharField(max_length=100,default="")
     introduction = models.TextField()
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     group_avatar = models.ImageField(upload_to="static/image/", blank=True, null=True)
-    p_password = models.CharField(max_length=200,default="",blank=True,null=True)
     is_public = models.BooleanField(default=True)
     is_hidden = models.BooleanField(default=False)
+    is_required_join_in_request = models.BooleanField(default=True)
+    is_show_intro_message = models.BooleanField(default=False)
+    intro_message = models.TextField(blank=True, null=True)
+    is_show_rules = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     
+    class Meta:
+         permissions = [
+            ('can_delete_any_post', 'Can Delete Any Post'),
+            ('can_delete_any_comment', 'Can Delete Any Comment'),
+            ('can_choose_another_admin', 'Can Choose Another Admin'),
+        ]
+
     def delete(self):
         remove = super().delete()
-        os.remove(self.group_avatar.path)        
+        try:
+            os.remove(self.group_avatar.path)
+        except ValueError:
+            pass        
         return remove
 
     def __str__(self):
@@ -27,17 +42,38 @@ class Community(models.Model):
 class Participant(models.Model):
     ROLE_CHOICES = [
         ('admin', 'Administrator'),
+        ('moderator', 'Moderator'),
         ('member', 'Member'),
-        ('guest', 'Guest'),
     ]
 
-    user = models.ForeignKey(get_user_model(), related_name="members", on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     community = models.ForeignKey(Community, related_name="participants", on_delete=models.CASCADE)
-    role = models.CharField(max_length=100, choices=ROLE_CHOICES, default="guest")
+    role = models.CharField(max_length=100, choices=ROLE_CHOICES, default="member")
 
     def __str__(self) -> str:
         return f'{self.user.username} | {self.community.name} | {self.role} | {self.id}'
 
+class CommunityRule(models.Model):
+    community = models.ForeignKey(Community,related_name="rules",on_delete=models.CASCADE)
+    title = models.CharField(max_length=100, default="")
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ["created_at"]
+
+    def __str__(self) -> str:
+        return f"{self.title} | {self.community.id} | {self.id}"
+
+class JoinInRequest(models.Model):
+    sender = models.OneToOneField(get_user_model(),on_delete=models.CASCADE)
+    community = models.ForeignKey(Community, related_name="join_in_req", on_delete=models.CASCADE)
+    message = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ["created_at"]
+
+    def __str__(self) -> str:
+        return f"{self.sender.username} | {self.id}" 
 
 class Reaction(models.Model):
     TYPE_CHOICES = (
@@ -53,7 +89,6 @@ class Reaction(models.Model):
 
     def __str__(self):
         return f"{self.id}"
-
 
 class Page(models.Model):
     community = models.ForeignKey(Community,related_name="pages",on_delete=models.CASCADE)

@@ -12,8 +12,12 @@ class CourseSerializer(serializers.ModelSerializer):
 
         if self.context.get("include_lessons"):
             lessons = LessonSerializer(instance.lessons, many=True).data
-            li = sorted(lessons, key=lambda obj:obj["no"])
-            representation["lessons"] = li
+
+            for obj in lessons:
+                obj.pop("course")
+
+            representation["lessons"] = lessons
+            
 
         return representation
 
@@ -28,8 +32,12 @@ class LessonSerializer(serializers.ModelSerializer):
         
         if self.context.get('include_sections'):
             sections = SectionSerializer(instance.sections, many=True).data
+
+            for obj in sections:
+                obj.pop("lesson")
+
             representation['sections'] = sections
-        
+
         return representation
 
 
@@ -47,6 +55,10 @@ class SectionSerializer(serializers.ModelSerializer):
             images = ImageSerializer(instance.images, many=True).data
             animations = AnimationSerializer(instance.animations, many=True).data
             li = sorted(contents + images + animations, key=lambda obj: obj["no"])
+
+            for obj in li:
+                obj.pop("section")
+
             representation["contents"] = li
 
         return representation
@@ -81,7 +93,6 @@ class ExerciseSerializer(serializers.ModelSerializer):
         model = Exercise
         fields = "__all__"
 
-
 class ExaminationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Examination
@@ -92,6 +103,10 @@ class ExaminationSerializer(serializers.ModelSerializer):
         
         if self.context.get('include_questions'):
             questions = QuestionSerializer(instance.questions, context={"include_choices":True} , many=True).data
+
+            for obj in questions:
+                obj.pop("examination")
+
             representation['questions'] = questions
         
         return representation
@@ -107,6 +122,10 @@ class QuestionSerializer(serializers.ModelSerializer):
         
         if self.context.get('include_choices'):
             choices = ChoiceSerializer(instance.choices, many=True).data
+
+            for obj in choices:
+                obj.pop("question")
+
             representation['choices'] = choices
         
         return representation
@@ -134,7 +153,6 @@ class AssignmentSerializer(serializers.ModelSerializer):
                 userchoice = UserChoice.objects.filter(assignment=instance, question=question["id"])[0].choice
                 question["choice"] = ChoiceSerializer(userchoice).data
             representation['questions'] = questions
-
         
         return representation
 
