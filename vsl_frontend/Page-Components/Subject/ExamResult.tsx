@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { examUrl } from "@/axios/endPoints";
+import { assignmentUrl } from "@/axios/endPoints";
 import { getExamResult } from "@/axios/getExam";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
@@ -9,7 +9,7 @@ import useSWR from "swr";
 export default function page({ id }: { id: string }) {
     const router = useRouter();
 
-    const { data, isLoading, error } = useSWR([examUrl(), id], (url) =>
+    const { data, isLoading, error } = useSWR([assignmentUrl, id], (url) =>
         getExamResult(url[0], url[1])
     );
 
@@ -23,7 +23,7 @@ export default function page({ id }: { id: string }) {
         if (!isLoading && data) {
             return (
                 <div>
-                    <div>{data.total_mark}</div>
+                    <div>{data.score}</div>
                 </div>
             );
         }

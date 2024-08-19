@@ -106,6 +106,7 @@ class ExaminationSerializer(serializers.ModelSerializer):
 
             for obj in questions:
                 obj.pop("examination")
+                obj.pop("answer")
 
             representation['questions'] = questions
         
@@ -149,9 +150,15 @@ class AssignmentSerializer(serializers.ModelSerializer):
         
         if self.context.get('include_questions'):
             questions = QuestionSerializer(instance.examination.questions, many=True).data
+
             for question in questions:
+                question.pop("examination")
+
                 userchoice = UserChoice.objects.filter(assignment=instance, question=question["id"])[0].choice
+
                 question["choice"] = ChoiceSerializer(userchoice).data
+                question["choice"].pop("question")
+
             representation['questions'] = questions
         
         return representation

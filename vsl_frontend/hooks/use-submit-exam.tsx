@@ -15,7 +15,7 @@ export default function useSubmitExam() {
     const onSubmit = (selectedChoice: object, examId: string) => {
         submit_exam(sendChoices(selectedChoice), examId)
             .then(() => {
-                router.push(`/courses/${examId}/result`);
+                router.push(`/courses/examination/${examId}/result`);
             })
             .catch((err) => {
                 console.log(err);

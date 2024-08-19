@@ -24,7 +24,7 @@ export default function Exam({ examPosition }: { examPosition: string[][] }) {
                                 left: `${examPosition[id][1]}px`,
                             }}
                         >
-                            <Link href={`/courses/${data[id].id}`}>
+                            <Link href={`/courses/examination/${data[id].id}`}>
                                 <div>{data[id].title}</div>
                             </Link>
                         </div>

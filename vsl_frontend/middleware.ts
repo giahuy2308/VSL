@@ -4,6 +4,7 @@ import { refresh_access_token } from "./axios/postData";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./authentication/token";
 
 export async function middleware(request: NextRequest) {
+    // return NextResponse.next();
     const isAuthenticated =
         request.nextUrl.pathname === "/reset-password" ||
         request.nextUrl.pathname === "/login" ||

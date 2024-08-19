@@ -3,3 +3,7 @@ export const accountUrl = "/accounts/";
 export const examUrl = "/course/examination/";
 
 export const lessonUrl = "/course/lesson/";
+
+export const communityUrl = "/community/";
+
+export const assignmentUrl = "/course/assignment/"

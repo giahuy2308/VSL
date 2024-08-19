@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
 
 const config = {
-    darkMode: ["class"],
     content: [
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
         "./Page-Components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -32,8 +31,11 @@ const config = {
                 too_big: "60px",
                 xxl: "50px",
                 xl: "40px",
+                xl_pl: "45px",
                 md_pl: "25px",
-                sm_pl: "17.5px",
+                sm_pl_pl: "17.5px",
+                sm_pl2: "14.5px",
+                sm_pl: "12.5px",
                 xs: "5px",
             },
             fontWeight: {
@@ -53,16 +55,19 @@ const config = {
                 },
             },
             colors: {
+                placeholder: "var(--placeholder)",
                 roomCard: "var(--roomCard)",
                 button: "var(--button)",
                 hover: "var(--hover)",
                 footer: "var(--footer)",
                 border1: "var(--border1)",
+                border2: "var(--border2)",
                 underline: "var(--underline)",
                 input: "var(--input)",
                 ring1: "var(--ring1)",
                 background: "var(--background)",
                 foreground: "var(--foreground)",
+                transparent1: "var(--transparent1)",
                 primary: {
                     DEFAULT: "var(--primary)",
                     foreground: "var(--primary-foreground)",
@@ -77,6 +82,9 @@ const config = {
                 },
                 muted: {
                     DEFAULT: "var(--muted)",
+                    2: "var(--muted2)",
+                    3: "var(--muted3)",
+                    4: "var(--muted4)",
                     foreground: "var(--muted-foreground)",
                 },
                 accent: {
@@ -107,6 +115,9 @@ const config = {
                 "accordion-up": "accordion-up 0.2s ease-out",
             },
         },
+    },
+    variants: {
+        extend: {},
     },
     plugins: [require("tailwindcss-animate")],
 } satisfies Config;
